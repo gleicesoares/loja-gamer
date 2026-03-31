@@ -111,11 +111,12 @@ if (isset($_POST['acao'])) {
     switch ($_POST['acao']) {
         case 'add':
             $nome = mysqli_real_escape_string($conn, $_POST['nome']);
-            $preco = $_POST['preco'];
+            $preco = floatval($_POST['preco']);
             $imagem = $_FILES['imagem']['name'];
             $descricao = mysqli_real_escape_string($conn, $_POST['descricao']);
-            move_uploaded_file($_FILES['imagem']['tmp_name'], "img/" . $imagem);
-            mysqli_query($conn, "INSERT INTO produtos (nome, preco, imagem, descricao) VALUES ('$nome', $preco, '$imagem', '$descricao')");
+            if (move_uploaded_file($_FILES['imagem']['tmp_name'], "img/" . $imagem)) {
+                mysqli_query($conn, "INSERT INTO produtos (nome, preco, imagem, descricao) VALUES ('$nome', $preco, '$imagem', '$descricao')");
+            }
             break;
         case 'edit':
             $id = $_POST['id'];
@@ -189,16 +190,16 @@ $ultimos_pedidos = mysqli_query($conn, "SELECT * FROM pedidos ORDER BY data DESC
                 <input type="hidden" name="acao" value="add">
                 <div class="form-group col-md-6">
                     <label for="InputPro">Produto</label>
-      <input type="text" class="form-control" id="InputPro" placeholder="Nome do Produto" required>
+      <input type="text" class="form-control" id="InputPro" name="nome" placeholder="Nome do Produto" required>
             <!-- <input type="text" name="nome" placeholder="Nome do Produto" required> -->
             </div>
             <div class="form-group col-md-6">
                 <label for="InputPre">Preço</label>
-            <input type="number" class="form-control" id="InputPre" step="0.01" placeholder="Preço" required>
+            <input type="number" class="form-control" id="InputPre" name="preco" step="0.01" placeholder="Preço" required>
         </div>
         <div class="form-group col-md-6">
             <label for="InputImg">Imagem</label>
-            <input type="file" class="form-control" id="InputImg" placeholder="Imagem" accept="image/*" required>
+            <input type="file" class="form-control" id="InputImg" name="imagem" placeholder="Imagem" accept="image/*" required>
         </div>
         <div class="row gap-1">
         <div class="col-10">
@@ -265,7 +266,7 @@ $ultimos_pedidos = mysqli_query($conn, "SELECT * FROM pedidos ORDER BY data DESC
             </tr>
             <?php endwhile; ?>
         </div>
-
+ 
     </div>
     <br>
 
