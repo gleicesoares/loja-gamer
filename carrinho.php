@@ -59,7 +59,7 @@ $total = 0;
         <p class="text-white">Carrinho vazio!</p>
     <?php else: ?>
         <table>
-            <tr><th>Imagem</th><th>Produto</th><th>Preço</th><th>Qtde</th><th>Total</th><th>Ações</th></tr>
+            
             <div class="container text-center bg-dark fade-in ">
               <div class="row gap-1">
             <?php foreach ($_SESSION['carrinho'] as $id => $item): 
